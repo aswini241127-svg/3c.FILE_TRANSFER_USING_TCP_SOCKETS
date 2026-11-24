@@ -1,6 +1,6 @@
 # 3c.CREATION FOR FILE TRANSFER USING TCP SOCKETS
 ```
-DEVELOPED BY: THARANI RAMESHBABU       REG NO: 212225240170
+DEVELOPED BY: ASWINI D     REG NO: 212225240015
 ```
 ## AIM
 To write a python program for creating File Transfer using TCP Sockets Links
