@@ -1,7 +1,4 @@
 # 3c.CREATION FOR FILE TRANSFER USING TCP SOCKETS
-```
-DEVELOPED BY: ASWINI D     REG NO: 212225240015
-```
 ## AIM
 To write a python program for creating File Transfer using TCP Sockets Links
 ## ALGORITHM:
@@ -11,54 +8,69 @@ To write a python program for creating File Transfer using TCP Sockets Links
 4. Open the file and then send it to the client in byte format.
 5. In the client side receive the file from server and then write the content into it.
 ## PROGRAM
-```
-CLIENT SIDE:
-import socket 
-s = socket.socket() 
-host = socket.gethostname() 
-port = 60000 
-s.connect((host, port)) 
-s.send("Hello server!".encode()) 
-with open('received_file', 'wb') as f: 
-  while True: 
-    print('receiving data...') 
-    data = s.recv(1024) 
-    print('data=%s', (data)) 
-    if not data: 
-      break 
-      f.write(data) 
-      f.close() 
-      print('Successfully get the file') 
-      s.close() 
-      print('connection closed')
+### server.py
+~~~
+import socket
 
-SERVER SIDE:
-import socket 
-port = 60000 
-s = socket.socket() 
-host = socket.gethostname() 
-s.bind((host, port)) 
-s.listen(5) 
-while True: 
-  conn, addr = s.accept() 
-  data = conn.recv(1024) 
-  print('Server received', repr(data)) 
-  filename='mytext.txt' 
-  f = open(filename,'rb') 
-  l = f.read(1024) 
-  while (l): 
-    conn.send(l) 
-    print('Sent',repr(l))
-    l = f.read(1024)
-  f.close() 
-  print('Done sending') 
-  conn.send('Thank you for connecting'.encode()) 
-  conn.close()
-```
-## OUTPUT
-<img width="1084" height="843" alt="image" src="https://github.com/user-attachments/assets/fbce68c6-aeac-4669-9c77-c42ea81bd29c" />
-<img width="727" height="756" alt="image" src="https://github.com/user-attachments/assets/780b7efa-6aa4-4666-bb69-2b624816e0ef" />
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
+s.bind(('localhost', 8000))
+s.listen(1)
+
+print("Server waiting for connection...")
+
+c, addr = s.accept()
+
+print("Client connected:", addr)
+
+while True:
+    msg = c.recv(1024).decode()
+
+    if msg.lower() == "exit":
+        print("Client disconnected")
+        break
+
+    print("Client:", msg)
+
+    reply = input("Server: ")
+    c.send(reply.encode())
+
+    if reply.lower() == "exit":
+        break
+
+c.close()
+s.close()
+~~~
+### client.py
+~~~
+import socket
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+s.connect(('localhost', 8000))
+
+print("Connected to server")
+
+while True:
+    msg = input("Client: ")
+
+    s.send(msg.encode())
+
+    if msg.lower() == "exit":
+        break
+
+    reply = s.recv(1024).decode()
+
+    if reply.lower() == "exit":
+        print("Server disconnected")
+        break
+
+    print("Server:", reply)
+
+s.close()
+~~~
+## OUPUT
+<img width="830" height="260" alt="image" src="https://github.com/user-attachments/assets/58e9af82-0ce2-415d-9b0a-2704da14dfc2" />
 
 ## RESULT
 Thus, the python program for creating File Transfer using TCP Sockets Links was 
